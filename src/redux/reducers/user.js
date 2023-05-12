@@ -5,7 +5,7 @@ const INITIAL_STATE = {
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
-  console.log(state, action);
+  // console.log(state, action);
   switch (action.type) {
   case 'LOGIN': return { ...state, user: { ...state.user, email: action.email } };
     //   case 'RECEIVE_MOVIES': return { ...state, props: { ...state.props, loading: false, pokemons: action.movies } };

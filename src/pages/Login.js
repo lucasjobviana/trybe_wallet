@@ -78,12 +78,12 @@ const mapStateToProps = (state) => ({
   wallet: state.wallet,
   user: state.user,
 });
-export default connect(mapStateToProps)(Login);
 
 Login.propTypes = {
-  dispatch: PropTypes.shape({
-  }).isRequired,
+  dispatch: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
 };
+
+export default connect(mapStateToProps)(Login);
