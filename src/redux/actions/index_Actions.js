@@ -26,12 +26,34 @@ const receiveCoins = (coins) => ({
 
 });
 
+const salveExpense = (expense) => ({
+
+  type: 'SALVE_EXPENSE',
+
+  expense,
+
+});
+
 // thunk action creator: deve retornar uma função
+
+export function getQuotation(expense) {
+  return (dispatch) => {
+    console.log(expense);
+    console.log(expense.currencySelect);
+    fetch('https://economia.awesomeapi.com.br/json/all')
+      .then((response) => response.json())
+      .then((coins) => {
+        console.log(coins);
+        const arrayKeys = Object.entries(coins)
+          .filter((c) => c[0] !== 'USDT');
+        dispatch(salveExpense({ ...expense, exchangeRates: { ...arrayKeys } }));
+      });
+  };
+}
 
 export function fetchCoins() {
   return (dispatch) => {
-    console.log(dispatch);
-    // dispatch(requestMoviesStarted()); // dispatch da action 'REQUEST_MOVIES_STARTED'
+    // console.log(dispatch);
     fetch('https://economia.awesomeapi.com.br/json/all')
       .then((response) => response.json())
       .then((coins) => {
@@ -44,7 +66,5 @@ export function fetchCoins() {
 
         dispatch(receiveCoins(arrayKeys));
       });
-    // .catch(() => dispatch(error()));
-    // dispatch da action 'RECEIVE_MOVIES'
   };
 }
