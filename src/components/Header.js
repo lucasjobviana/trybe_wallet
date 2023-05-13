@@ -5,8 +5,8 @@ import PropTypes from 'prop-types';
 class Header extends Component {
   render() {
     console.log(this.props);
-    const { user } = this.props;
-    const { email } = user;
+    const { email } = this.props;
+
     console.log(email);
     return (
       <div className="header">
@@ -25,14 +25,13 @@ class Header extends Component {
     );
   }
 }
+
 Header.propTypes = {
-  user: PropTypes.shape({
-    email: PropTypes.string.isRequired,
-  }).isRequired,
+  email: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  user: state.user,
+  email: state.user.email,
 });
 
 export default connect(mapStateToProps)(Header);
