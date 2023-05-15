@@ -44,9 +44,11 @@ export function getQuotation(expense) {
       .then((response) => response.json())
       .then((coins) => {
         console.log(coins);
-        const arrayKeys = Object.entries(coins)
-          .filter((c) => c[0] !== 'USDT');
-        dispatch(salveExpense({ ...expense, exchangeRates: { ...arrayKeys } }));
+        // const arrayKeys = Object.entries(coins)
+        // .filter((c) => c[0] !== 'USDT');
+        delete coins.USDT;
+
+        dispatch(salveExpense({ ...expense, exchangeRates: { ...coins } }));
       });
   };
 }

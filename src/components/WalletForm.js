@@ -28,7 +28,7 @@ class WalletForm extends Component {
       ...this.state,
       id: expensesId,
     };
-    console.log(newExpense);
+    // console.log(newExpense);
 
     dispatch(getQuotation(newExpense));
 
