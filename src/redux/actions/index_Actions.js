@@ -4,37 +4,20 @@ export const actionLogin = (email = 'sem email') => ({
   email,
 });
 
-// const requestMoviesStarted = () => ({
-
-//   type: 'REQUEST_MOVIES_STARTED',
-
-// });
-
-// const error = () => ({
-
-//   type: 'ERROR',
-
-// });
-
-// action creator
-
 const receiveCoins = (coins) => ({
-
   type: 'RECEIVE_COINS',
-
   coins,
-
 });
 
 const salveExpense = (expense) => ({
-
   type: 'SALVE_EXPENSE',
-
   expense,
-
 });
 
-// thunk action creator: deve retornar uma função
+export const deleteExpense = (idExpense) => ({
+  type: 'DELETE_EXPENSE',
+  idExpense,
+});
 
 export function getQuotation(expense) {
   return (dispatch) => {

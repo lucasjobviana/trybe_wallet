@@ -1,7 +1,7 @@
 // Esse reducer será responsável por tratar o todas as informações relacionadas as despesas
 const INITIAL_STATE = {
   currencies: [],
-  expensesId: 0,
+  expensesId: 1,
   expenses: [],
 };
 
@@ -16,13 +16,18 @@ const wallet = (state = INITIAL_STATE, action) => {
   case 'SALVE_EXPENSE': return { ...state,
     expensesId: state.expensesId + 1,
     expenses: [...state.expenses, action.expense] };
-    // state.wallet.currencies,
+  case 'DELETE_EXPENSE': {
+    const newExpenseList = state.expenses.filter((e) => {
+      console.log(e.id); console.log(action.idExpense);
+      return Number.parseInt(action.idExpense, 10) !== e.id;
+    });
+    console.log('============================');
+    console.log(newExpenseList);
+    return { ...state, expenses: [...newExpenseList] };
+  }
 
-    // case 'SALVE_EXPENSE': return { ...state,
-    //   expensesId: state.expensesId + 1,
-    //   expenses: [...expenses, action.expenses] };
   default: return state;
   }
 };
-
+// delete coins.USDT;
 export default wallet;
