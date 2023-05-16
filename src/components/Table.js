@@ -20,8 +20,8 @@ class Table extends Component {
     console.log(expenses);
 
     const linesTable = expenses.length > 0
-      ? expenses.map((expense, index) => (
-        <tr key={ index }>
+      ? expenses.map((expense) => (
+        <tr key={ expense.id } id={ expense.id }>
           <td>{expense.description}</td>
           <td>{expense.tag}</td>
           <td>{expense.method}</td>
