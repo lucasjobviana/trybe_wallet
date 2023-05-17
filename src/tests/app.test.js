@@ -45,6 +45,7 @@ describe('Testando a aplicação', () => {
 
     const iptValue = screen.getByTestId('value-input');
     const iptDescription = screen.getByTestId('description-input');
+
     userEvent.type(iptValue, '1');
     userEvent.type(iptDescription, 'Descrição do um');
 
@@ -52,8 +53,10 @@ describe('Testando a aplicação', () => {
       userEvent.click(screen.getByText('Adicionar despesa'));
     });
 
+    const odeioOLint = 'total-field';
     await screen.findAllByText('Descrição do um');
-    expect(screen.getByTestId('total-field').textContent).toBe('4.75');
+    expect(screen.getByTestId(odeioOLint).textContent).toBe('4.75');
+    expect(screen.getByText('Dólar Americano/Real Brasileiro')).toBeInTheDocument();
 
     userEvent.type(iptValue, '2');
     userEvent.type(iptDescription, 'Descrição do dois');
@@ -66,6 +69,23 @@ describe('Testando a aplicação', () => {
     const b2 = screen.getAllByTestId('delete-btn');
 
     act(() => { userEvent.click(b2[1]); });
-    expect(screen.getByTestId('total-field').textContent).toBe('4.75');
+    expect(screen.getByTestId(odeioOLint).textContent).toBe('4.75');
+
+    const b3 = screen.getAllByTestId('edit-btn');
+    act(() => { userEvent.click(b3[0]); });
+
+    expect(screen.getByText('x')).toBeInTheDocument();
+
+    userEvent.clear(iptDescription);
+    userEvent.type(iptDescription, 'Nova descrição');
+    userEvent.clear(iptValue);
+    userEvent.type(iptValue, '22');
+
+    act(() => {
+      userEvent.click(screen.getByText('Editar despesa'));
+    });
+
+    await screen.findAllByText('Nova descrição');
+    expect(Math.round(screen.getByTestId('total-field').textContent)).toEqual(Math.round(4.75 * 22));
   });
 });
