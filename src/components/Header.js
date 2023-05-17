@@ -5,13 +5,11 @@ import PropTypes from 'prop-types';
 class Header extends Component {
   render() {
     const { email, expenses } = this.props;
-    console.log(expenses);
-
     const total = expenses.length > 0
       ? expenses.reduce((acc, expense) => acc
       + Number.parseFloat(expense.value)
-      * Number.parseFloat(expense.exchangeRates[expense.currency].ask), 0) : 0;// expense.value
-    console.log(total); // expense.exchangeRates[expense.currency].ask ;
+      * Number.parseFloat(expense.exchangeRates[expense.currency].ask), 0) : 0;
+
     return (
       <div className="header">
         <div>

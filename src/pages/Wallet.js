@@ -7,8 +7,6 @@ class Wallet extends React.Component {
     return (
       <>
         <Header />
-
-        <div>This is vallet content</div>
         <Table />
       </>
 

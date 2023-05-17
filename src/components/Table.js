@@ -30,9 +30,6 @@ class Table extends Component {
   render() {
     const { expenses } = this.props;
     const { editId } = this.state;
-    console.log(expenses);
-    console.log(editId);
-
     const linesTable = expenses.length > 0
       ? expenses.map((expense) => (
         <tr key={ expense.id } id={ expense.id }>

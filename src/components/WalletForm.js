@@ -38,9 +38,6 @@ class WalletForm extends Component {
       if (e.id === id) { return newLine; } return e;
     });
 
-    console.log(newLine);
-    console.log(newGVG);
-
     dispatch(editExpense(newGVG));
     close();
     /// ////////////////////////
@@ -54,7 +51,6 @@ class WalletForm extends Component {
       ...this.state,
       id: expensesId,
     };
-    // console.log(newExpense);
 
     dispatch(getQuotation(newExpense));
 
@@ -95,7 +91,7 @@ class WalletForm extends Component {
             />
           </label>
           <label>
-            Custo:
+            Descrição:
             <input
               type="text"
               data-testid="description-input"
