@@ -19,6 +19,11 @@ export const deleteExpense = (idExpense) => ({
   idExpense,
 });
 
+export const editExpense = (expense) => ({
+  type: 'EDIT_EXPENSE',
+  expense,
+});
+
 export function getQuotation(expense) {
   return (dispatch) => {
     console.log(expense);

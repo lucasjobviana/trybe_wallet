@@ -7,15 +7,20 @@ const INITIAL_STATE = {
 
 const wallet = (state = INITIAL_STATE, action) => {
   console.log(state, action.expense);
-  console.log({ ...state,
+  console.log({
+    ...state,
     expensesId: state.expensesId + 1,
-    expenses: { ...state.expenses, ...action.expense } });
+    expenses: { ...state.expenses, ...action.expense },
+  });
   switch (action.type) { // SALVE_EXPENSE
-  case 'RECEIVE_COINS': return { ...state, currencies: action.coins,
+  case 'RECEIVE_COINS': return {
+    ...state, currencies: action.coins,
   };
-  case 'SALVE_EXPENSE': return { ...state,
+  case 'SALVE_EXPENSE': return {
+    ...state,
     expensesId: state.expensesId + 1,
-    expenses: [...state.expenses, action.expense] };
+    expenses: [...state.expenses, action.expense],
+  };
   case 'DELETE_EXPENSE': {
     const newExpenseList = state.expenses.filter((e) => {
       console.log(e.id); console.log(action.idExpense);
@@ -25,6 +30,10 @@ const wallet = (state = INITIAL_STATE, action) => {
     console.log(newExpenseList);
     return { ...state, expenses: [...newExpenseList] };
   }
+  case 'EDIT_EXPENSE': return {
+    ...state,
+    expenses: action.expense,
+  };
 
   default: return state;
   }
