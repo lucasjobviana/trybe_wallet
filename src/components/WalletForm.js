@@ -8,6 +8,7 @@ import SendIcon from '@mui/icons-material/Send';
 import Box from '@mui/material/Box';
 import { fetchCoins, getQuotation, editExpense } from '../redux/actions/index_Actions';
 
+const defaultTag = 'Alimentação';
 class WalletForm extends Component {
   constructor() {
     super();
@@ -16,7 +17,7 @@ class WalletForm extends Component {
       description: '',
       method: 'Dinheiro',
       currency: 'USD',
-      tag: 'Alimentação',
+      tag: defaultTag,
     };
   }
 
@@ -64,7 +65,7 @@ class WalletForm extends Component {
       description: '',
       method: 'Dinheiro',
       currency: 'USD',
-      tag: 'Alimentação',
+      tag: defaultTag,
     });
   };
 
