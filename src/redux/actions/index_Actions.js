@@ -30,7 +30,12 @@ export function getQuotation(expense) {
       .then((response) => response.json())
       .then((coins) => {
         delete coins.USDT;
-        dispatch(salveExpense({ ...expense, exchangeRates: { ...coins } }));
+        console.log(coins);
+        dispatch(salveExpense({ ...expense,
+          exchangeRates: {
+            ...coins,
+            BRL: { name: 'Real Brasilerio', ask: '1', code: 'BRL' },
+          } }));
       });
   };
 }
@@ -43,7 +48,7 @@ export function fetchCoins() {
         const arrayKeys = Object.entries(coins)
           .filter((c) => c[0] !== 'USDT')
           .map((cur) => cur[1].code);
-        dispatch(receiveCoins(arrayKeys));
+        dispatch(receiveCoins([...arrayKeys, 'BRL']));
       });
   };
 }

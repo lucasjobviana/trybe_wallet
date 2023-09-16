@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
 import PropType from 'prop-types';
 import { connect } from 'react-redux';
+import TextField from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
+import Button from '@mui/material/Button';
+import SendIcon from '@mui/icons-material/Send';
+import Box from '@mui/material/Box';
 import { fetchCoins, getQuotation, editExpense } from '../redux/actions/index_Actions';
 
+const defaultTag = 'Alimentação';
 class WalletForm extends Component {
   constructor() {
     super();
@@ -11,7 +17,7 @@ class WalletForm extends Component {
       description: '',
       method: 'Dinheiro',
       currency: 'USD',
-      tag: 'Alimentação',
+      tag: defaultTag,
     };
   }
 
@@ -59,7 +65,7 @@ class WalletForm extends Component {
       description: '',
       method: 'Dinheiro',
       currency: 'USD',
-      tag: 'Alimentação',
+      tag: defaultTag,
     });
   };
 
@@ -70,75 +76,128 @@ class WalletForm extends Component {
   render() {
     const { currencies, add } = this.props;
     const { value, description, method, currency, tag } = this.state;
-
-    const arrayCode = currencies.map(
-      (cur, index) => (<option key={ index } value={ cur }>{cur}</option>),
-    );
+    const methods = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
+    const tags = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
 
     const textBtn = add ? 'Adicionar despesa' : 'Editar despesa';
     const fncBtn = add ? this.addExpense : this.editExpenseThis;
     return (
-      <div>
-        <form id="expenses">
-          <label>
-            Custo:
-            <input
-              type="number"
-              data-testid="value-input"
-              onChange={ this.handleChange }
-              value={ value }
-              name="value"
-            />
-          </label>
-          <label>
-            Descrição:
-            <input
-              type="text"
-              data-testid="description-input"
-              onChange={ this.handleChange }
-              value={ description }
-              name="description"
-            />
-          </label>
-          <label>
-            Moeda:
-            <select
-              name="currency"
-              data-testid="currency-input"
-              onChange={ this.handleChange }
-              value={ currency }
-            >
-              {arrayCode}
-            </select>
-          </label>
-          <select
+      <Box
+        component="form"
+        sx={ {
+
+          width: '100vw',
+          backgroundColor: '#4f4f4f',
+        } }
+        noValidate
+        autoComplete="on"
+        id="expenses"
+      >
+        <Box
+          sx={ { display: 'flex',
+            justifyContent: 'end',
+            backgroundColor: '#f22f00' } }
+        >
+          <Button
+            variant="contained"
+            type="submit"
+            onClick={ fncBtn }
+            endIcon={ <SendIcon /> }
+          >
+            {textBtn}
+          </Button>
+
+        </Box>
+
+        <Box sx={ { display: 'flex', justifyContent: 'center' } }>
+          <TextField
+            id="standard-number"
+            error={ value < 0 }
+            helperText={ value < 0 ? 'Não pode ser menor que zero' : '' }
+            label="Custo"
+            type="number"
+            data-testid="value-input"
+            onChange={ this.handleChange }
+            value={ value }
+            name="value"
+            InputLabelProps={ {
+              shrink: true,
+            } }
+            variant="filled"
+          />
+
+          <TextField
+            label="Descrição"
+            type="text"
+            data-testid="description-input"
+            onChange={ this.handleChange }
+            value={ description }
+            name="description"
+            InputLabelProps={ {
+              shrink: true,
+            } }
+            variant="filled"
+          />
+
+          <TextField
+            id="filled-select-currency"
+            select
+            label="Moeda"
+            defaultValue="BRL"
+            helperText="Selecione a moeda"
+            variant="filled"
+            name="currency"
+            data-testid="currency-input"
+            onChange={ this.handleChange }
+            value={ currency }
+          >
+            {currencies.map((option) => (
+              <MenuItem key={ option } value={ option }>
+                {option}
+              </MenuItem>
+            ))}
+          </TextField>
+
+          <TextField
+            id="filled-select-method"
+            select
+            label="Pagamento"
+            defaultValue="BRL"
+            helperText="Selecione o método de pagamento"
+            variant="filled"
             name="method"
             data-testid="method-input"
             onChange={ this.handleChange }
             value={ method }
           >
-            <option value="Dinheiro" selected>Dinheiro</option>
-            <option value="Cartão de débito">Cartão de débito</option>
-            <option value="Cartão de crédito">Cartão de crédito</option>
-          </select>
-          <select
+            {methods.map((option) => (
+              <MenuItem key={ option } value={ option }>
+                {option}
+              </MenuItem>
+            ))}
+          </TextField>
+
+          <TextField
+            id="filled-select-tag"
+            select
+            label="Tipo de despesa"
+            defaultValue="BRL"
+            helperText="Selecione o tipo de despesa"
+            variant="filled"
             name="tag"
             data-testid="tag-input"
             onChange={ this.handleChange }
             value={ tag }
           >
-            <option value="Alimentação" selected>Alimentação</option>
-            <option value="Lazer">Lazer</option>
-            <option value="Trabalho">Trabalho</option>
-            <option value="Transporte">Transporte</option>
-            <option value="Saúde">Saúde</option>
-          </select>
-          <button type="submit" onClick={ fncBtn }>
-            {textBtn}
-          </button>
+            {tags.map((option) => (
+              <MenuItem key={ option } value={ option }>
+                {option}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Box>
+      </Box>
 
-        </form>
-      </div>
     );
   }
 }

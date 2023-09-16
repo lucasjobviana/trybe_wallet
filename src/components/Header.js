@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
+import Box from '@mui/material/Box';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import { Avatar } from '@mui/material';
+import { deepOrange } from '@mui/material/colors';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 
 class Header extends Component {
   render() {
@@ -11,20 +19,48 @@ class Header extends Component {
       * Number.parseFloat(expense.exchangeRates[expense.currency].ask), 0) : 0;
 
     return (
-      <div className="header">
-        <div>
-          TrybeWallet:
-          <span data-testid="email-field">
-            {email}
-          </span>
-        </div>
-        <div>
-          <h1 data-testid="total-field">{total.toFixed(2)}</h1>
 
-          <h1 data-testid="header-currency-field">BRL</h1>
-        </div>
+      <Box sx={ { flexGrow: 1 } }>
+        <AppBar position="static">
+          <Toolbar
+            sx={ { display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between' } }
+          >
+            <Typography variant="h6" component="div">
+              Wallet
+            </Typography>
 
-      </div>
+            <Typography variant="h4" component="div">
+              BRL -
+              {` ${total.toFixed(2)}`}
+            </Typography>
+
+            <Typography variant="h6" component="div">
+              {
+                email
+                  ? (
+                    <>
+                      {/* Email:
+{' '}
+{email} */}
+                      <Avatar sx={ { bgcolor: deepOrange[500] } }>LJ</Avatar>
+                    </>
+                  )
+                  : <Button
+                    color="inherit"
+                    onClick={ () => this.props.history.push('/') }
+                  >
+                    Login
+
+                  </Button>
+              }
+            </Typography>
+          </Toolbar>
+        </AppBar>
+
+      </Box>
+
     );
   }
 }
@@ -39,4 +75,4 @@ const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
 });
 
-export default connect(mapStateToProps)(Header);
+export default withRouter(connect(mapStateToProps)(Header));

@@ -1,13 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { deleteExpense } from '../redux/actions/index_Actions';
+import Box from '@mui/material/Box';
+import { DataGrid } from '@mui/x-data-grid';
+import Button from '@mui/material/Button';
 import WalletForm from './WalletForm';
+import { deleteExpense } from '../redux/actions/index_Actions';
 
 class Table extends Component {
-  headers = ['Descrição', 'Tag', 'Método de pagamento',
-    'Valor', 'Moeda', 'Câmbio utilizado', 'Valor convertido',
-    'Moeda de conversão', 'Editar/Excluir'];
+  headersNovo = [
+    { label: 'Descrição', name: 'description' },
+    { label: 'Tag', name: 'tag' },
+    { label: 'Método de pagamento', name: 'method' },
+    { label: 'Valor', name: 'value' },
+    { label: 'Moeda', name: 'currency' },
+    { label: 'Câmbio utilizado', name: 'exchangeRates' },
+    { label: 'Valor convertido', name: 'convertedValue' },
+    { label: 'Moeda de conversão', name: 'c' },
+  ];
 
   constructor() {
     super();
@@ -28,60 +38,79 @@ class Table extends Component {
   };
 
   render() {
+    const newHeaders = this.headersNovo.map((header) => ({
+      field: header.name, headerName: header.label, editable: true,
+    }));
+
+    const newHeadersWithButtons = [...newHeaders,
+
+      { field: 'btnEdit',
+        headerName: 'Editar',
+        type: 'button',
+        renderCell: (expense) => (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={ () => { this.setState({ editId: expense.id }); } }
+          >
+            editar
+
+          </Button>
+        ) },
+      { field: 'btnDeletar',
+        headerName: 'Deletar',
+        type: 'button',
+        renderCell: (expense) => (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={ () => { this.handleDelete(expense.id); } }
+          >
+            Deletar
+
+          </Button>
+        ) },
+    ];
+
     const { expenses } = this.props;
+
+    const newExpenses = expenses.map((expense) => ({
+      id: expense.id,
+      description: expense.description,
+      tag: expense.tag,
+      method: expense.method,
+      value: Number.parseFloat(expense.value).toFixed(2),
+      currency: expense.exchangeRates[expense.currency].name,
+      exchangeRates: Number.parseFloat(expense.exchangeRates[
+        expense.currency].ask).toFixed(2),
+      convertedValue: (Number.parseFloat(expense.exchangeRates[
+        expense.currency].ask) * Number.parseFloat(expense.value)).toFixed(2),
+      c: 'Real',
+    }));
+
     const { editId } = this.state;
-    const linesTable = expenses.length > 0
-      ? expenses.map((expense) => (
-        <tr key={ expense.id } id={ expense.id }>
-          <td>{expense.description}</td>
-          <td>{expense.tag}</td>
-          <td>{expense.method}</td>
-          <td>{Number.parseFloat(expense.value).toFixed(2)}</td>
-          <td>{expense.exchangeRates[expense.currency].name}</td>
-          <td>
-            {Number.parseFloat(expense.exchangeRates[
-              expense.currency].ask).toFixed(2)}
-
-          </td>
-          <td>
-            {(
-              Number.parseFloat(expense.exchangeRates[
-                expense.currency].ask)
-              * Number.parseFloat(expense.value)
-            ).toFixed(2)}
-
-          </td>
-          <td>Real</td>
-          <td>
-            <button
-              onClick={ () => { this.handleDelete(expense.id); } }
-              data-testid="delete-btn"
-            >
-              Deletar
-            </button>
-
-            <button
-              onClick={ () => { this.setState({ editId: expense.id }); } }
-              data-testid="edit-btn"
-            >
-              Editar
-            </button>
-          </td>
-
-        </tr>)) : '';
-
-    const headersElement = this.headers.map((header, index) => (
-      <th key={ index }>{header}</th>));
 
     if (editId === null) {
       return (
-        <div>
+        <>
           <WalletForm add />
-          <table>
-            <thead><tr>{headersElement}</tr></thead>
-            <tbody>{linesTable}</tbody>
-          </table>
-        </div>
+
+          <Box sx={ { height: 400, width: '100%' } }>
+            <DataGrid
+              rows={ newExpenses }
+              columns={ newHeadersWithButtons }
+              initialState={ {
+                pagination: {
+                  paginationModel: {
+                    pageSize: 5,
+                  },
+                },
+              } }
+              checkboxSelection
+              disableRowSelectionOnClick
+            />
+          </Box>
+        </>
       );
     }
     return (
@@ -101,20 +130,3 @@ const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
 });
 export default connect(mapStateToProps)(Table);
-
-// return (
-//   editId === null
-//   ?
-//   <div>
-//     <WalletForm add />
-//     <table>
-//       <thead><tr>{headersElement}</tr></thead>
-//       <tbody>{linesTable}</tbody>
-//     </table>
-//   </div>
-
-//     : <div>
-//       <WalletForm add={ false } id={ editId } close={ this.close } />
-//       <button onClick={ this.close }>x</button>
-//     </div>
-// );
